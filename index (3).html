@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youssef Shalabya | Data & AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  /* ── THEME VARIABLES ── */
+  [data-theme="dark"] {
+    --bg: #080c10;
+    --bg2: #0d1117;
+    --surface: #111920;
+    --surface2: #162030;
+    --accent: #00d4ff;
+    --accent2: #0099cc;
+    --accent3: #00ff9d;
+    --text: #e8f4f8;
+    --muted: #6b8a99;
+    --border: rgba(0,212,255,0.12);
+    --glow: rgba(0,212,255,0.15);
+    --nav-bg: rgba(8,12,16,0.88);
+    --card-hover-shadow: rgba(0,0,0,0.4);
+    --toggle-bg: #162030;
+    --toggle-icon: "☀️";
+  }
+  [data-theme="light"] {
+    --bg: #f0f6fb;
+    --bg2: #e2edf5;
+    --surface: #ffffff;
+    --surface2: #ddeaf4;
+    --accent: #007aab;
+    --accent2: #005f85;
+    --accent3: #00885a;
+    --text: #0d1f2d;
+    --muted: #4a6a80;
+    --border: rgba(0,122,171,0.18);
+    --glow: rgba(0,122,171,0.1);
+    --nav-bg: rgba(240,246,251,0.92);
+    --card-hover-shadow: rgba(0,0,0,0.12);
+    --toggle-bg: #ddeaf4;
+    --toggle-icon: "🌙";
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.3;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2.5rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+  .nav-links {
+    display: flex;
+    gap: 1.4rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-shrink: 0;
+  }
+  /* Theme Toggle */
+  .theme-toggle {
+    background: var(--toggle-bg);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 0.35rem 0.7rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--muted);
+  }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.45rem 1.1rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--accent); color: var(--bg); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 6rem 2.5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    pointer-events: none;
+  }
+  [data-theme="light"] .hero-grid-bg {
+    background-image:
+      linear-gradient(rgba(0,122,171,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,122,171,0.07) 1px, transparent 1px);
+  }
+  .hero-glow {
+    position: absolute; top: 20%; right: 10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative; z-index: 1;
+    max-width: 1200px; margin: 0 auto; width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0,255,157,0.08);
+    border: 1px solid rgba(0,255,157,0.25);
+    color: var(--accent3);
+    padding: 0.35rem 0.9rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent3);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+  .hero-role {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: transparent;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .hero-subtitles {
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 1.2rem;
+    font-weight: 400;
+  }
+  .hero-subtitles span {
+    color: var(--accent);
+    opacity: 0.7;
+    margin: 0 0.4rem;
+  }
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    line-height: 1.75;
+    max-width: 500px;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 0.75rem 1.8rem;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); box-shadow: 0 8px 25px var(--glow); }
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1.8rem;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.88rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-stats {
+    display: flex; gap: 2.5rem;
+    margin-top: 2.5rem; padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.8rem;
+    color: var(--accent); line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.72rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.3rem;
+  }
+
+  /* ── HERO PHOTO ── */
+  .hero-photo-wrap {
+    position: relative;
+    width: 280px;
+    flex-shrink: 0;
+  }
+  .hero-photo-ring {
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    position: relative;
+  }
+  .hero-photo-ring::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    animation: spin 8s linear infinite;
+  }
+  .hero-photo-ring::after {
+    content: '';
+    position: absolute;
+    inset: -16px;
+    border-radius: 50%;
+    border: 1px dashed rgba(0,212,255,0.2);
+    animation: spin 14s linear infinite reverse;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .hero-photo {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    background: var(--surface2);
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 5.5rem 2.5rem; position: relative; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.15em; color: var(--accent);
+    margin-bottom: 0.6rem; font-weight: 600;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(1.7rem, 3vw, 2.6rem);
+    letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 0.8rem;
+  }
+  .section-sub {
+    color: var(--muted); font-size: 0.97rem;
+    max-width: 540px; line-height: 1.7; margin-bottom: 2.5rem;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--bg2); }
+  .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: start; }
+  .about-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1rem; font-size: 0.96rem; }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .about-links { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+  .about-link {
+    display: flex; align-items: center; gap: 0.5rem;
+    color: var(--muted); text-decoration: none; font-size: 0.84rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; transition: all 0.2s;
+  }
+  .about-link:hover { color: var(--accent); border-color: var(--accent); }
+  .info-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.1rem 1.4rem;
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 0.8rem;
+  }
+  .info-icon { font-size: 1.2rem; width: 36px; text-align: center; flex-shrink: 0; }
+  .info-value { font-weight: 500; font-size: 0.88rem; color: var(--text); }
+  .info-key { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* ── EXPERIENCE ── */
+  #experience { background: var(--bg); }
+  .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .exp-col-label {
+    font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.1em; font-weight: 600; margin-bottom: 1.5rem;
+  }
+  .timeline { position: relative; padding-left: 1.8rem; }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px; background: linear-gradient(180deg, var(--accent), transparent);
+  }
+  .timeline-item {
+    position: relative; padding: 0 0 2.2rem 1.8rem;
+    opacity: 0; transform: translateX(-15px);
+    animation: slideIn 0.5s ease forwards;
+  }
+  .timeline-item:nth-child(1){animation-delay:0.1s}
+  .timeline-item:nth-child(2){animation-delay:0.2s}
+  .timeline-item:nth-child(3){animation-delay:0.3s}
+  .timeline-item:nth-child(4){animation-delay:0.4s}
+  @keyframes slideIn { to { opacity:1; transform:translateX(0); } }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -2.1rem; top: 0.35rem;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 8px var(--accent);
+  }
+  .timeline-item.green-dot::before { background: var(--accent3); box-shadow: 0 0 8px var(--accent3); }
+  .timeline-date { font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 0.3rem; }
+  .timeline-date.green { color: var(--accent3); }
+  .timeline-role { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 0.2rem; }
+  .timeline-company { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.7rem; }
+  .timeline-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+  .timeline-bullets li { font-size: 0.84rem; color: var(--muted); padding-left: 1rem; position: relative; line-height: 1.55; }
+  .timeline-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 0.65rem; top: 0.15rem; }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--bg2); }
+  .skills-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; }
+  .skill-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.4rem; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .skill-card:hover { border-color: rgba(0,212,255,0.35); transform: translateY(-3px); box-shadow: 0 12px 35px var(--card-hover-shadow); }
+  .skill-card-icon { font-size: 1.6rem; margin-bottom: 0.8rem; }
+  .skill-card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.92rem; color: var(--text); margin-bottom: 0.9rem; }
+  .skill-bars { display: flex; flex-direction: column; gap: 0.55rem; }
+  .skill-row { display: flex; align-items: center; gap: 0.7rem; }
+  .skill-name { font-size: 0.75rem; color: var(--muted); width: 68px; flex-shrink: 0; }
+  .skill-bar-bg { flex: 1; height: 4px; background: rgba(128,128,128,0.1); border-radius: 2px; overflow: hidden; }
+  .skill-bar-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    transform-origin: left; animation: fillBar 1.5s ease-out forwards; transform: scaleX(0);
+  }
+  @keyframes fillBar { to { transform: scaleX(1); } }
+  .tech-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .tag {
+    background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.18);
+    color: var(--accent); padding: 0.3rem 0.75rem; border-radius: 4px;
+    font-size: 0.76rem; font-weight: 500; transition: all 0.2s;
+  }
+  .tag:hover { background: rgba(0,212,255,0.18); }
+  .tag.green { background: rgba(0,255,157,0.07); border-color: rgba(0,255,157,0.2); color: var(--accent3); }
+
+  /* ── TRAINING ── */
+  #training { background: var(--bg); }
+  .training-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.4rem; }
+  .training-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.6rem; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .training-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%; background: linear-gradient(180deg, var(--accent), transparent);
+  }
+  .training-card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-2px); box-shadow: 0 10px 30px var(--card-hover-shadow); }
+  .training-org { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); font-weight: 600; margin-bottom: 0.4rem; }
+  .training-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.97rem; color: var(--text); margin-bottom: 0.4rem; line-height: 1.3; }
+  .training-date { font-size: 0.76rem; color: var(--muted); margin-bottom: 0.9rem; }
+  .training-topics { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .topic-tag {
+    background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.1);
+    color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 3px; font-size: 0.7rem;
+  }
+
+  /* ── PROJECTS ── */
+  #projects { background: var(--bg2); }
+  .projects-note {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.3rem 1.8rem; margin-bottom: 1.8rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .projects-note-text { font-size: 0.86rem; color: var(--muted); }
+  .projects-note-text strong { color: var(--accent); }
+  .projects-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; }
+  .project-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.6rem; transition: all 0.3s; display: flex; flex-direction: column;
+  }
+  .project-card:hover { border-color: rgba(0,212,255,0.35); transform: translateY(-3px); box-shadow: 0 12px 35px var(--card-hover-shadow); }
+  .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.9rem; }
+  .project-icon { font-size: 1.7rem; }
+  .project-status { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.55rem; border-radius: 100px; font-weight: 600; }
+  .status-wip { background: rgba(255,200,0,0.1); color: #ffc800; border: 1px solid rgba(255,200,0,0.2); }
+  .status-done { background: rgba(0,255,157,0.08); color: var(--accent3); border: 1px solid rgba(0,255,157,0.2); }
+  .project-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.93rem; color: var(--text); margin-bottom: 0.55rem; line-height: 1.3; }
+  .project-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; flex: 1; margin-bottom: 1.1rem; }
+  .project-tools { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tool-tag { background: rgba(0,212,255,0.07); border: 1px solid rgba(0,212,255,0.15); color: var(--accent); padding: 0.22rem 0.6rem; border-radius: 3px; font-size: 0.7rem; font-weight: 500; }
+
+  /* ── EDUCATION ── */
+  #education { background: var(--bg); }
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+  .edu-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.6rem; transition: border-color 0.3s; }
+  .edu-card:hover { border-color: rgba(0,212,255,0.3); }
+  .edu-card.featured { grid-column: 1 / -1; display: grid; grid-template-columns: auto 1fr; gap: 1.4rem; align-items: center; background: var(--surface2); border-color: rgba(0,212,255,0.2); }
+  .edu-badge { width: 56px; height: 56px; background: linear-gradient(135deg, var(--accent), var(--accent3)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+  .edu-degree { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--text); margin-bottom: 0.3rem; }
+  .edu-school { font-size: 0.83rem; color: var(--muted); margin-bottom: 0.5rem; }
+  .edu-meta { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+  .edu-chip { background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.15); color: var(--accent); padding: 0.18rem 0.65rem; border-radius: 100px; font-size: 0.7rem; font-weight: 600; }
+  .edu-chip.gold { background: rgba(255,200,0,0.08); border-color: rgba(255,200,0,0.2); color: #ffc800; }
+  .cert-title { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.88rem; color: var(--text); margin-bottom: 0.3rem; }
+  .cert-issuer { font-size: 0.76rem; color: var(--muted); margin-bottom: 0.55rem; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--bg2); }
+  .contact-wrapper { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start; }
+  .contact-item { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 1.4rem; }
+  .contact-icon-wrap { width: 42px; height: 42px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .contact-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.2rem; }
+  .contact-value { color: var(--text); text-decoration: none; font-size: 0.86rem; transition: color 0.2s; }
+  .contact-value:hover { color: var(--accent); }
+  .form-group { margin-bottom: 1.1rem; }
+  .form-label { display: block; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.45rem; font-weight: 600; }
+  .form-input, .form-textarea {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.75rem 1rem; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; transition: border-color 0.2s; outline: none;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow); }
+  .form-textarea { resize: vertical; min-height: 120px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg); border-top: 1px solid var(--border);
+    padding: 1.8rem 2.5rem; display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy { font-size: 0.78rem; color: var(--muted); }
+  .footer-links { display: flex; gap: 1.4rem; }
+  .footer-links a { color: var(--muted); font-size: 0.78rem; text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1000px) {
+    .nav-links { display: none; }
+    nav { padding: 1rem 1.5rem; }
+    section { padding: 4rem 1.5rem; }
+    #hero { padding: 5rem 1.5rem 3rem; }
+    .hero-content { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-photo-wrap { margin: 0 auto; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .exp-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .training-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .edu-grid { grid-template-columns: 1fr; }
+    .edu-card.featured { grid-template-columns: 1fr; }
+    .contact-wrapper { grid-template-columns: 1fr; gap: 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Youssef.ai</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#training">Training</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://github.com/YoussefShalabya" target="_blank">GitHub</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
+    <a href="#contact" class="nav-cta">Hire Me</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <!-- LEFT TEXT -->
+    <div>
+      <div class="hero-badge">Open to Opportunities</div>
+      <h1 class="hero-name">Youssef Shalabya</h1>
+      <span class="hero-role">Data & AI Engineer</span>
+      <div class="hero-subtitles">
+        Data Analytics <span>·</span> Data Scientist <span>·</span> Machine Learning Engineer
+      </div>
+      <p class="hero-desc">
+        Communications &amp; Computer Engineering student with hands-on experience in
+        <strong>Data Analytics, Machine Learning, and AI</strong>.
+        Turning raw data into actionable insights with Python, SQL, Power BI &amp; Tableau.
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary">View Projects →</a>
+        <a href="Youssef_Shalabya_DataAI_CV.pdf" download class="btn-outline">Download CV ↓</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num">4+</div><div class="stat-label">Years Study</div></div>
+        <div><div class="stat-num">6+</div><div class="stat-label">Experiences</div></div>
+        <div><div class="stat-num">87%</div><div class="stat-label">GPA Grade</div></div>
+        <div><div class="stat-num">10+</div><div class="stat-label">Certifications</div></div>
+      </div>
+    </div>
+    <!-- RIGHT PHOTO -->
+    <div class="hero-photo-wrap">
+      <div class="hero-photo-ring">
+        <img class="hero-photo" src="data:image/png;base64,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" alt="Youssef Shalabya">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <p class="section-label">Who I Am</p>
+    <h2 class="section-title">Building the bridge between<br>data &amp; decisions</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a <strong>Communications &amp; Computer Engineering student</strong> at Benha University (graduating 2026) with a cumulative grade of <strong>Excellent – 87%</strong>. My passion sits at the intersection of data, AI, and real-world problem solving.</p>
+        <p>Through national programs like <strong>DEPI (Digital Egypt Pioneers Initiative)</strong> and multiple ML/AI training programs with NTI, Huawei ETA, Orange Digital Center, and Creativa Hub, I've built a solid foundation in data analytics and machine learning.</p>
+        <p>Beyond the technical side, I serve as a <strong>Training Coordinator</strong> at Almentor, EYouth, and iLearn Academy — managing large-scale national education initiatives and leveraging Excel &amp; Power BI to track performance and generate stakeholder reports.</p>
+        <p>Currently building <strong>Excel and Power BI portfolio projects</strong>, studying <strong>Database Fundamentals</strong>, and expanding into deep learning with Python and Scikit-learn.</p>
+        <div class="about-links">
+          <a href="mailto:youssef.shalabya@gmail.com" class="about-link">📧 youssef.shalabya@gmail.com</a>
+          <a href="https://linkedin.com/in/youssef-shalabya" target="_blank" class="about-link">💼 LinkedIn</a>
+          <a href="tel:+201142244215" class="about-link">📞 +20 114 224 4215</a>
+          <a href="https://github.com/YoussefShalabya" target="_blank" class="about-link">🐙 GitHub</a>
+        </div>
+      </div>
+      <div>
+        <div class="info-card"><div class="info-icon">📍</div><div><div class="info-key">Location</div><div class="info-value">Benha, Qalyubia — Cairo, Egypt</div></div></div>
+        <div class="info-card"><div class="info-icon">🎓</div><div><div class="info-key">Degree</div><div class="info-value">B.Sc. Communications &amp; Computer Engineering</div></div></div>
+        <div class="info-card"><div class="info-icon">🌍</div><div><div class="info-key">Languages</div><div class="info-value">Arabic (Native) · English (Very Good)</div></div></div>
+        <div class="info-card"><div class="info-icon">🤝</div><div><div class="info-key">Volunteer</div><div class="info-value">IEEE Benha University Student Branch</div></div></div>
+        <div class="info-card"><div class="info-icon">🎯</div><div><div class="info-key">Currently Learning</div><div class="info-value">Database Fundamentals · Deep Learning · Power BI Projects</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label">Work History</p>
+    <h2 class="section-title">Experience</h2>
+    <p class="section-sub">Combining technical data skills with project coordination across national digital initiatives.</p>
+    <div class="exp-grid">
+      <!-- LEFT: Technical Internships -->
+      <div>
+        <p class="exp-col-label" style="color:var(--accent3)">🔬 Technical Internships & Training</p>
+        <div class="timeline">
+          <div class="timeline-item green-dot">
+            <div class="timeline-date green">Apr 2026 – May 2026</div>
+            <div class="timeline-role">Machine Learning Diploma</div>
+            <div class="timeline-company">Creativa Innovation Hub · Benha</div>
+            <ul class="timeline-bullets">
+              <li>Python basics, NumPy, Pandas, Matplotlib</li>
+              <li>Regression, Classification, Decision Trees, Random Forest, SVM</li>
+              <li>Clustering (K-Means), Neural Networks, Deep Learning basics</li>
+              <li>Model Deployment with Flask &amp; Streamlit</li>
+            </ul>
+          </div>
+          <div class="timeline-item green-dot">
+            <div class="timeline-date green">Feb 2026 – Apr 2026</div>
+            <div class="timeline-role">Data Analysis Using AI Training</div>
+            <div class="timeline-company">Orange Digital Center × Digital Hub · Dokki, Cairo</div>
+            <ul class="timeline-bullets">
+              <li>30 hours offline — 5 days (2 sessions/day)</li>
+              <li>AI tools for data cleaning, EDA, and visualization</li>
+              <li>Predictive analysis, automating workflows</li>
+              <li>Building interactive dashboards with AI assistance</li>
+            </ul>
+          </div>
+          <div class="timeline-item green-dot">
+            <div class="timeline-date green">Jul 2025 – Aug 2025</div>
+            <div class="timeline-role">Machine Learning Summer Training</div>
+            <div class="timeline-company">NTI (National Telecommunication Institute)</div>
+            <ul class="timeline-bullets">
+              <li>Applied ML algorithms for data analysis and decision-making tasks</li>
+            </ul>
+          </div>
+          <div class="timeline-item green-dot">
+            <div class="timeline-date green">Jun 2025 – Jul 2025</div>
+            <div class="timeline-role">Artificial Intelligence Track</div>
+            <div class="timeline-company">NTI – Huawei Egyptian Talents Academy (ETA)</div>
+            <ul class="timeline-bullets">
+              <li>Python for AI, mathematics for ML</li>
+              <li>Machine learning and deep learning foundations</li>
+            </ul>
+          </div>
+          <div class="timeline-item green-dot">
+            <div class="timeline-date green">Oct 2024 – May 2025</div>
+            <div class="timeline-role">Data Analytics Trainee</div>
+            <div class="timeline-company">DEPI – Ministry of Communications</div>
+            <ul class="timeline-bullets">
+              <li>Data cleaning, processing &amp; visualization with Excel, SQL, Python</li>
+              <li>EDA, statistics, real-world dashboards and case studies</li>
+              <li>Google Data Analytics Professional Certificate</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- RIGHT: Coordination -->
+      <div>
+        <p class="exp-col-label" style="color:var(--accent)">📋 Coordination &amp; Operations</p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-date">Jun 2025 – Present</div>
+            <div class="timeline-role">Training Coordinator</div>
+            <div class="timeline-company">iLearn Academy for Training &amp; Consulting · Cairo</div>
+            <ul class="timeline-bullets">
+              <li>Managed DEPI training logistics for hundreds of students</li>
+              <li>Used Excel &amp; Power BI for attendance tracking and weekly reports</li>
+              <li>Maintained communication between trainers, students, and stakeholders</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">Oct 2024 – Present</div>
+            <div class="timeline-role">Training Coordinator</div>
+            <div class="timeline-company">EYouth · Cairo (Hybrid)</div>
+            <ul class="timeline-bullets">
+              <li>Managed daily DEPI technical training track execution</li>
+              <li>Analyzed attendance data with Power BI for progress reports</li>
+              <li>Main point of contact for trainers and students</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">Jul 2024 – Present</div>
+            <div class="timeline-role">Training Coordinator</div>
+            <div class="timeline-company">Almentor · Remote</div>
+            <ul class="timeline-bullets">
+              <li>Coordinated the "Digital Egypt Cubs Initiative (DECI)"</li>
+              <li>Tracked learner engagement and generated weekly stakeholder reports</li>
+              <li>Supported Ministry of Communications national youth initiative</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <p class="section-label">Technical Expertise</p>
+    <h2 class="section-title">Skills &amp; Tools</h2>
+    <p class="section-sub">From data wrangling to machine learning — building the full analytics pipeline.</p>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-card-icon">📊</div>
+        <div class="skill-card-title">Data Analytics &amp; BI</div>
+        <div class="tech-tags">
+          <span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Excel</span>
+          <span class="tag">Pivot Tables</span><span class="tag">Tableau</span><span class="tag">SQL</span>
+          <span class="tag">Power Query</span><span class="tag">Dashboards</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">🐍</div>
+        <div class="skill-card-title">Python &amp; Libraries</div>
+        <div class="tech-tags">
+          <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">NumPy</span>
+          <span class="tag">Matplotlib</span><span class="tag">Seaborn</span><span class="tag">Scikit-learn</span>
+          <span class="tag">Jupyter</span><span class="tag">Google Colab</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">🧠</div>
+        <div class="skill-card-title">AI &amp; Machine Learning</div>
+        <div class="tech-tags">
+          <span class="tag">Regression</span><span class="tag">Classification</span><span class="tag">Clustering</span>
+          <span class="tag">Decision Trees</span><span class="tag">Random Forest</span><span class="tag">SVM</span>
+          <span class="tag">Neural Networks</span><span class="tag">Deep Learning</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">💾</div>
+        <div class="skill-card-title">Data Engineering</div>
+        <div class="tech-tags">
+          <span class="tag">SQL</span><span class="tag">Data Cleaning</span><span class="tag">EDA</span>
+          <span class="tag">Statistics</span><span class="tag">Feature Engineering</span><span class="tag">PostgreSQL</span>
+          <span class="tag">Hypothesis Testing</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">🛠️</div>
+        <div class="skill-card-title">Dev &amp; Tools</div>
+        <div class="tech-tags">
+          <span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">Linux</span>
+          <span class="tag">C / C++</span><span class="tag">HTML/CSS</span><span class="tag">Streamlit</span>
+          <span class="tag">Flask</span><span class="tag">VS Code</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">🎯</div>
+        <div class="skill-card-title">Soft Skills</div>
+        <div class="tech-tags" style="margin-top:0.4rem">
+          <span class="tag" style="font-size:0.7rem">Leadership</span>
+          <span class="tag" style="font-size:0.7rem">Communication</span>
+          <span class="tag" style="font-size:0.7rem">Problem Solving</span>
+          <span class="tag green" style="font-size:0.7rem">Critical Thinking</span>
+          <span class="tag green" style="font-size:0.7rem">Teamwork</span>
+          <span class="tag" style="font-size:0.7rem">Presentation</span>
+          <span class="tag" style="font-size:0.7rem">Time Mgmt</span>
+          <span class="tag green" style="font-size:0.7rem">Adaptability</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINING -->
+<section id="training">
+  <div class="container">
+    <p class="section-label">Continuous Learning</p>
+    <h2 class="section-title">Training Programs</h2>
+    <p class="section-sub">Hands-on programs with leading national and international organizations in AI and data.</p>
+    <div class="training-grid">
+      <div class="training-card">
+        <div class="training-org">Creativa Innovation Hub · Benha</div>
+        <div class="training-title">Machine Learning Diploma</div>
+        <div class="training-date">Apr 2026 – May 2026</div>
+        <div class="training-topics">
+          <span class="topic-tag">Python Basics</span><span class="topic-tag">NumPy &amp; Pandas</span>
+          <span class="topic-tag">Regression Models</span><span class="topic-tag">Classification</span>
+          <span class="topic-tag">Decision Trees</span><span class="topic-tag">Random Forest / SVM</span>
+          <span class="topic-tag">K-Means Clustering</span><span class="topic-tag">Neural Networks</span>
+          <span class="topic-tag">Deep Learning</span><span class="topic-tag">Flask / Streamlit</span>
+        </div>
+      </div>
+      <div class="training-card">
+        <div class="training-org">Orange Digital Center × Digital Hub</div>
+        <div class="training-title">Data Analysis Using AI Training</div>
+        <div class="training-date">Feb 2026 – Apr 2026 · Dokki, Cairo · 30 Hours Offline</div>
+        <div class="training-topics">
+          <span class="topic-tag">AI Tools for Analytics</span><span class="topic-tag">Data Cleaning with AI</span>
+          <span class="topic-tag">EDA</span><span class="topic-tag">AI Data Insights</span>
+          <span class="topic-tag">Predictive Analysis</span><span class="topic-tag">Interactive Dashboards</span>
+          <span class="topic-tag">Automating Workflows</span><span class="topic-tag">AI-Driven Insights</span>
+        </div>
+      </div>
+      <div class="training-card">
+        <div class="training-org">NTI</div>
+        <div class="training-title">Machine Learning Summer Training</div>
+        <div class="training-date">Jul 2025 – Aug 2025</div>
+        <div class="training-topics">
+          <span class="topic-tag">ML Algorithms</span><span class="topic-tag">Data Analysis</span><span class="topic-tag">Decision Making</span>
+        </div>
+      </div>
+      <div class="training-card">
+        <div class="training-org">NTI – Huawei Egyptian Talents Academy</div>
+        <div class="training-title">Artificial Intelligence Track</div>
+        <div class="training-date">Jun 2025 – Jul 2025</div>
+        <div class="training-topics">
+          <span class="topic-tag">Python for AI</span><span class="topic-tag">Math for ML</span>
+          <span class="topic-tag">Machine Learning</span><span class="topic-tag">Deep Learning</span>
+        </div>
+      </div>
+      <div class="training-card">
+        <div class="training-org">DEPI – Ministry of Communications</div>
+        <div class="training-title">Data Analytics Track (Google Certificate)</div>
+        <div class="training-date">Oct 2024 – May 2025</div>
+        <div class="training-topics">
+          <span class="topic-tag">Excel &amp; Tableau</span><span class="topic-tag">SQL</span>
+          <span class="topic-tag">Python</span><span class="topic-tag">EDA</span>
+          <span class="topic-tag">Data Cleaning</span><span class="topic-tag">Statistics</span>
+        </div>
+      </div>
+      <div class="training-card">
+        <div class="training-org">Creativa Innovation Hub</div>
+        <div class="training-title">Excel Dashboard Bootcamp</div>
+        <div class="training-date">Apr – May 2024</div>
+        <div class="training-topics">
+          <span class="topic-tag">Excel Dashboards</span><span class="topic-tag">Pivot Tables</span>
+          <span class="topic-tag">Charts &amp; Formulas</span><span class="topic-tag">Data Reporting</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <p class="section-label">Portfolio</p>
+    <h2 class="section-title">Projects</h2>
+    <div class="projects-note">
+      <div style="font-size:1.4rem">🚀</div>
+      <div class="projects-note-text">
+        Currently <strong>actively building</strong> Excel and Power BI portfolio projects. New projects added regularly — check back soon or reach out to collaborate.
+      </div>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-header"><div class="project-icon">📊</div><span class="project-status status-done">Done</span></div>
+        <div class="project-title">DEPI Data Analytics Dashboards</div>
+        <div class="project-desc">Real-world case study dashboards built during the DEPI program. Performed EDA, data cleaning, and visualization using Excel, SQL, and Python.</div>
+        <div class="project-tools"><span class="tool-tag">Python</span><span class="tool-tag">SQL</span><span class="tool-tag">Excel</span><span class="tool-tag">Tableau</span></div>
+        <a href="https://github.com/YoussefShalabya/Depi_Project-Store_Sales_Dataset_Analysis" target="_blank" style="display:inline-block;margin-top:1rem;font-size:0.78rem;color:var(--accent);text-decoration:none;border:1px solid var(--border);padding:0.3rem 0.8rem;border-radius:4px;transition:all 0.2s;" onmouseover="this.style.background='rgba(0,212,255,0.1)'" onmouseout="this.style.background='transparent'">🐙 View on GitHub →</a>
+      </div>
+      <div class="project-card">
+        <div class="project-header"><div class="project-icon">📈</div><span class="project-status status-wip">In Progress</span></div>
+        <div class="project-title">Power BI Portfolio Dashboard</div>
+        <div class="project-desc">Interactive Power BI dashboards in development. Focused on KPI tracking, sales analysis, and performance reporting with clean data models.</div>
+        <div class="project-tools"><span class="tool-tag">Power BI</span><span class="tool-tag">DAX</span><span class="tool-tag">Power Query</span></div>
+      </div>
+      <div class="project-card">
+        <div class="project-header"><div class="project-icon">🗂️</div><span class="project-status status-wip">In Progress</span></div>
+        <div class="project-title">Excel Analytics Projects</div>
+        <div class="project-desc">Building Excel dashboard projects with pivot tables, charts, and advanced formulas for business reporting.</div>
+        <div class="project-tools"><span class="tool-tag">Excel</span><span class="tool-tag">Pivot Tables</span><span class="tool-tag">Data Visualization</span></div>
+      </div>
+      <div class="project-card">
+        <div class="project-header"><div class="project-icon">🤖</div><span class="project-status status-wip">In Progress</span></div>
+        <div class="project-title">ML Models — Creativa Hub Projects</div>
+        <div class="project-desc">Applied machine learning models from the Creativa Hub diploma — classification, regression, and clustering on real datasets with Python.</div>
+        <div class="project-tools"><span class="tool-tag">Python</span><span class="tool-tag">Scikit-learn</span><span class="tool-tag">Pandas</span><span class="tool-tag">Matplotlib</span></div>
+      </div>
+      <div class="project-card">
+        <div class="project-header"><div class="project-icon">🤖</div><span class="project-status status-wip">In Progress</span></div>
+        <div class="project-title">AI-Powered Data Analysis</div>
+        <div class="project-desc">Using AI tools learned at Orange Digital Center training to automate data analysis workflows and generate AI-driven insights from datasets.</div>
+        <div class="project-tools"><span class="tool-tag">AI Tools</span><span class="tool-tag">Python</span><span class="tool-tag">Dashboards</span></div>
+      </div>
+      <div class="project-card">
+        <div class="project-header"><div class="project-icon">🗄️</div><span class="project-status status-wip">Learning</span></div>
+        <div class="project-title">Database Fundamentals Projects</div>
+        <div class="project-desc">Studying Database Fundamentals from YouTube. Building SQL projects focused on complex queries, joins, aggregations, and business insights.</div>
+        <div class="project-tools"><span class="tool-tag">SQL</span><span class="tool-tag">PostgreSQL</span><span class="tool-tag">Database Design</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <p class="section-label">Background</p>
+    <h2 class="section-title">Education &amp; Certifications</h2>
+    <div class="edu-grid">
+      <div class="edu-card featured">
+        <div class="edu-badge">🎓</div>
+        <div>
+          <div class="edu-degree">B.Sc. Communications &amp; Computer Engineering</div>
+          <div class="edu-school">Benha Faculty of Engineering, Benha University · 2021 – 2026 (Expected)</div>
+          <div class="edu-meta">
+            <span class="edu-chip gold">Excellent – 87%</span>
+            <span class="edu-chip">Data Analysis</span>
+            <span class="edu-chip">AI &amp; ML</span>
+          </div>
+        </div>
+      </div>
+      <div class="edu-card"><div class="cert-title">Digital Egypt Pioneers Initiative (DEPI)</div><div class="cert-issuer">Ministry of Communications · Data Analytics · 2024–2025</div><div class="edu-meta"><span class="edu-chip">Google Certificate</span><span class="edu-chip">National Program</span></div></div>
+      <div class="edu-card"><div class="cert-title">Machine Learning Summer Training</div><div class="cert-issuer">NTI · Jul – Aug 2025</div><div class="edu-meta"><span class="edu-chip">ML Algorithms</span></div></div>
+      <div class="edu-card"><div class="cert-title">NTI-Huawei Egyptian Talents Academy</div><div class="cert-issuer">Artificial Intelligence Track · Jun – Jul 2025</div><div class="edu-meta"><span class="edu-chip">AI</span><span class="edu-chip">Deep Learning</span></div></div>
+      <div class="edu-card"><div class="cert-title">Machine Learning Diploma</div><div class="cert-issuer">Creativa Innovation Hub Benha · Apr – May 2026</div><div class="edu-meta"><span class="edu-chip">ML</span><span class="edu-chip">Deep Learning</span><span class="edu-chip">Deployment</span></div></div>
+      <div class="edu-card"><div class="cert-title">Data Analysis Using AI Training</div><div class="cert-issuer">Orange Digital Center × Digital Hub · Feb – Apr 2026</div><div class="edu-meta"><span class="edu-chip">AI Analytics</span><span class="edu-chip">30 Hours</span></div></div>
+      <div class="edu-card"><div class="cert-title">SQL for Data Analysis + Intro to Data Analysis</div><div class="cert-issuer">DataCamp · 2025</div><div class="edu-meta"><span class="edu-chip">SQL</span><span class="edu-chip">Data Wrangling</span></div></div>
+      <div class="edu-card"><div class="cert-title">Excel Dashboard Bootcamp</div><div class="cert-issuer">Creativa Innovation Hub · Apr/May 2024</div><div class="edu-meta"><span class="edu-chip">Excel</span><span class="edu-chip">Pivot Tables</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <p class="section-label">Get In Touch</p>
+    <h2 class="section-title">Let's work together</h2>
+    <p class="section-sub">Open to internships, data projects, collaboration, and full-time opportunities after graduation.</p>
+    <div class="contact-wrapper">
+      <div>
+        <div class="contact-item"><div class="contact-icon-wrap">📧</div><div><div class="contact-label">Email</div><a href="mailto:youssef.shalabya@gmail.com" class="contact-value">youssef.shalabya@gmail.com</a></div></div>
+        <div class="contact-item"><div class="contact-icon-wrap">💼</div><div><div class="contact-label">LinkedIn</div><a href="https://linkedin.com/in/youssef-shalabya" target="_blank" class="contact-value">linkedin.com/in/youssef-shalabya</a></div></div>
+        <div class="contact-item"><div class="contact-icon-wrap">📞</div><div><div class="contact-label">Phone</div><a href="tel:+201142244215" class="contact-value">+20 114 224 4215</a></div></div>
+        <div class="contact-item"><div class="contact-icon-wrap">📍</div><div><div class="contact-label">Location</div><span class="contact-value">Benha, Qalyubia — Cairo, Egypt</span></div></div>
+      </div>
+      <div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Full Name</label><input type="text" id="from_name" class="form-input" placeholder="Your name"></div>
+          <div class="form-group"><label class="form-label">Email</label><input type="email" id="from_email" class="form-input" placeholder="your@email.com"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Subject</label><input type="text" id="subject" class="form-input" placeholder="Internship / Project / Collaboration"></div>
+        <div class="form-group"><label class="form-label">Message</label><textarea id="message" class="form-textarea" placeholder="Tell me about your project or opportunity..."></textarea></div>
+        <button class="btn-primary" style="width:100%" onclick="sendEmail(event)">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2026 Youssef Shalabya · Built with purpose.</div>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="mailto:youssef.shalabya@gmail.com">Email</a>
+    <a href="https://linkedin.com/in/youssef-shalabya" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  emailjs.init("3jLuK31xQyaDt4mDj"); // ← هتحطها بعدين
+
+  function toggleTheme() {
+    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    if (html.getAttribute('data-theme') === 'dark') {
+      html.setAttribute('data-theme', 'light');
+      btn.textContent = '🌙 Dark';
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      btn.textContent = '☀️ Light';
+    }
+  }
+
+  function sendEmail(e) {
+    e.preventDefault();
+    const btn = e.target;
+    const name = document.getElementById('from_name').value.trim();
+    const email = document.getElementById('from_email').value.trim();
+    const subject = document.getElementById('subject').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if (!name || !email || !message) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    emailjs.send("service_8yybl0w", "template_loxhivu", {
+      from_name: name,
+      from_email: email,
+      subject: subject,
+      message: message
+    }).then(() => {
+      btn.textContent = '✅ Message Sent!';
+      document.getElementById('from_name').value = '';
+      document.getElementById('from_email').value = '';
+      document.getElementById('subject').value = '';
+      document.getElementById('message').value = '';
+      setTimeout(() => { btn.textContent = 'Send Message →'; btn.disabled = false; }, 3000);
+    }).catch((err) => {
+      console.error(err);
+      btn.textContent = '❌ Failed. Try again.';
+      btn.disabled = false;
+    });
+  }
+</script>
+</body>
+</html>
